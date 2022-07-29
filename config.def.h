@@ -34,18 +34,22 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class     instance  title           tags mask    iscentered   isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",    NULL,     NULL,           0,           0,           1,          0,           0,        -1 },
-	{ "Firefox", NULL,     NULL,           1 << 8,      0,           0,          0,          -1,        -1 },
-	{ "St",      NULL,     NULL,           0,           0,           0,          1,           0,        -1 },
-	{ NULL,      NULL,     "Event Tester", 0,           0,           0,          0,           1,        -1 }, /* xev */
+	/* class,            instance, title,                          tags mask, isterminal, noswallow, iscenter, isfakef, isfloat, monitor */
+	{ NULL,              NULL,     "Volume Control",               0,         0,          0,         1,        0,       1,       -1 },
+	{ "firefox",         NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       -1 },
+	{ "Chromium",        NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       -1 },
+	{ "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       -1 },
+	{ "TelegramDesktop", NULL,     "Media viewer",                 0,         0,          0,         1,        0,       1,       -1 },
+	{ "St",              NULL,     NULL,                           0,         1,          0,         0,        0,       0,       -1 },
+	{ NULL,              NULL,     "popup-center",                 0,         1,          0,         1,        0,       1,       -1 },
+	{ NULL,              NULL,     "Microsoft Teams Notification", 0,         0,          0,         0,        0,       1,       -1 },
+	{ NULL,              NULL,     "Event Tester",                 0,         0,          1,         0,        0,       0,       -1 }, /* xev */
 };
 
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
-static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
 	/* symbol arrange function  */
@@ -71,50 +75,51 @@ static const char *dunstdatecurr[]  = { "dunstdate", "curr", NULL };
 static const char *dunstdatenext[]  = { "dunstdate", "next", NULL };
 static const char *dunstdateprev[]  = { "dunstdate", "prev", NULL };
 
-static const Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_j,      pushdown,       {0} },
-	{ MODKEY|ShiftMask,             XK_k,      pushup,         {0} },
-	{ MODKEY,                       XK_space,  zoom,           {0} },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_h,      setcfact,       {.f = +0.25} },
-	{ MODKEY|ShiftMask,             XK_l,      setcfact,       {.f = -0.25} },
-	{ MODKEY|ShiftMask,             XK_o,      setcfact,       {.f =  0.00} },
-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_o,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_y,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_F2,     quit,           {0} },
-	{ MODKEY|ControlMask,           XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_period, tagmon,         {.i = +1 } },
+static Key keys[] = {
+	/* modifier                     key        function              argument */
+	{ MODKEY,                       XK_d,      spawn,                {.v = dmenucmd } },
+	{ MODKEY,                       XK_q,      killclient,           {0} },
+	{ MODKEY,                       XK_j,      focusstack,           {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,           {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_j,      pushdown,             {0} },
+	{ MODKEY|ShiftMask,             XK_k,      pushup,               {0} },
+	{ MODKEY,                       XK_space,  zoom,                 {0} },
+	{ MODKEY,                       XK_h,      setmfact,             {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,             {.f = +0.05} },
+	{ MODKEY|ShiftMask,             XK_h,      setcfact,             {.f = +0.25} },
+	{ MODKEY|ShiftMask,             XK_l,      setcfact,             {.f = -0.25} },
+	{ MODKEY|ShiftMask,             XK_o,      setcfact,             {.f =  0.00} },
+	{ MODKEY,                       XK_i,      incnmaster,           {.i = +1 } },
+	{ MODKEY,                       XK_o,      incnmaster,           {.i = -1 } },
+	{ MODKEY,                       XK_b,      togglebar,            {0} },
+	{ MODKEY,                       XK_t,      setlayout,            {.v = &layouts[0]} },
+	{ MODKEY,                       XK_f,      setlayout,            {.v = &layouts[1]} },
+	{ MODKEY,                       XK_y,      setlayout,            {.v = &layouts[2]} },
+	{ MODKEY,                       XK_u,      setlayout,            {.v = &layouts[3]} },
+	{ MODKEY,                       XK_Tab,    view,                 {0} },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating,       {0} },
+	{ MODKEY|ShiftMask,             XK_f,      togglefakefullscreen, {0} },
+	{ MODKEY,                       XK_0,      view,                 {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,                  {.ui = ~0 } },
+	{ MODKEY,                       XK_F2,     quit,                 {0} },
+	{ MODKEY|ControlMask,           XK_comma,  focusmon,             {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period, focusmon,             {.i = +1 } },
+	{ MODKEY|ControlMask|ShiftMask, XK_comma,  tagmon,               {.i = -1 } },
+	{ MODKEY|ControlMask|ShiftMask, XK_period, tagmon,               {.i = +1 } },
 	TAGKEYS(                        XK_1,      0)
 	TAGKEYS(                        XK_2,      1)
 	TAGKEYS(                        XK_3,      2)
 	TAGKEYS(                        XK_4,      3)
 	TAGKEYS(                        XK_5,      4)
 	TAGKEYS(                        XK_6,      5)
-	{ MODKEY,                       XK_Down,   moveresize,     {.v = (int []){ 0,    1,  0,  0 }}},
-	{ MODKEY,                       XK_Up,     moveresize,     {.v = (int []){ 0,    -1, 0,  0 }}},
-	{ MODKEY,                       XK_Right,  moveresize,     {.v = (int []){ 1,    0,  0,  0 }}},
-	{ MODKEY,                       XK_Left,   moveresize,     {.v = (int []){ -1,   0,  0,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = (int []){ 0,    0,  0,  1 }}},
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = (int []){ 0,    0,  0,  -1 }}},
-	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = (int []){ 0,    0,  1,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = (int []){ 0,    0,  -1, 0 }}},
+	{ MODKEY,                       XK_Down,   moveresize,           {.v = (int []){ 0,    1,  0,  0 }}},
+	{ MODKEY,                       XK_Up,     moveresize,           {.v = (int []){ 0,    -1, 0,  0 }}},
+	{ MODKEY,                       XK_Right,  moveresize,           {.v = (int []){ 1,    0,  0,  0 }}},
+	{ MODKEY,                       XK_Left,   moveresize,           {.v = (int []){ -1,   0,  0,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Down,   moveresize,           {.v = (int []){ 0,    0,  0,  1 }}},
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,           {.v = (int []){ 0,    0,  0,  -1 }}},
+	{ MODKEY|ShiftMask,             XK_Right,  moveresize,           {.v = (int []){ 0,    0,  1,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Left,   moveresize,           {.v = (int []){ 0,    0,  -1, 0 }}},
 };
 
 /* button definitions */
