@@ -1008,7 +1008,7 @@ drawstatusbar(Monitor *m, int bh, char* stext) {
 void
 drawbar(Monitor *m)
 {
-	int x, w, tw = 0, stw = 0, indc;
+	int x, w, tx = 0, stw = 0, indc;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
 	unsigned int i, occ = 0, urg = 0;
@@ -1022,7 +1022,7 @@ drawbar(Monitor *m)
 
 	/* draw status first so it can be overdrawn by tags later */
 	if (m == selmon) { /* status is only drawn on selected monitor */
-		tw = m->ww - drawstatusbar(m, bh, stext);
+		tx = drawstatusbar(m, bh, stext);
 	}
 
 	resizebarwin(m);
@@ -1056,12 +1056,26 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
-	if ((w = m->ww - tw - stw - x) > bh) {
+	if ((w = tx - x) > bh) {
 		if (m->sel) {
+			// draw rounded transitions
+			drw_rect(drw, x, 0, bh, bh, 1, 1);
+			drw_rect(drw, tx-bh, 0, bh, bh, 1, 1);
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			// manial antialiasing of rounded borders
+			XSetForeground(drw->dpy, drw->gc, drw->scheme[ColShade].pixel);
+			XFillArc(drw->dpy, drw->drawable, drw->gc, x, 4, bh-4, bh-4, 0, 23040);
+			XFillArc(drw->dpy, drw->drawable, drw->gc, tx-bh+4, 4, bh-4, bh-4, 0, 23040);
+			XSetForeground(drw->dpy, drw->gc, drw->scheme[ColBg].pixel);
+			XFillArc(drw->dpy, drw->drawable, drw->gc, x, 0, bh, bh, 0, 23040);
+			XFillArc(drw->dpy, drw->drawable, drw->gc, tx-bh, 0, bh, bh, 0, 23040);
+			drw_rect(drw, x+1, 0, bh/2, bh/2, 1, 1);
+			drw_rect(drw, tx-bh/2-1, 0, bh/2+1, bh/2, 1, 1);
+
+			// drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+			drw_text(drw, x+bh/2, 0, w-bh, bh, 0, m->sel->name, 0);
 			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+				drw_rect(drw, x + boxs + bh/5, boxs + 1, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);
@@ -2217,9 +2231,9 @@ setup(void)
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
 	scheme = ecalloc(LENGTH(colors) + 1, sizeof(Clr *));
-	scheme[LENGTH(colors)] = drw_scm_create(drw, colors[0], 3);
+	scheme[LENGTH(colors)] = drw_scm_create(drw, colors[0], ColLast);
 	for (i = 0; i < LENGTH(colors); i++)
-		scheme[i] = drw_scm_create(drw, colors[i], 3);
+		scheme[i] = drw_scm_create(drw, colors[i], ColLast);
 	/* init system tray */
 	updatesystray();
 	/* init bars */
