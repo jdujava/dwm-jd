@@ -1,0 +1,42 @@
+diff --git dwm.c dwm.c
+index 5e4d494..bdb1446 100644
+--- dwm.c
++++ dwm.c
+@@ -170,6 +170,7 @@ static void focusin(XEvent *e);
+ static void focusmon(const Arg *arg);
+ static void focusstack(const Arg *arg);
+ static Atom getatomprop(Client *c, Atom prop);
++static Client *getclientundermouse(void);
+ static int getrootptr(int *x, int *y);
+ static long getstate(Window w);
+ static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
+@@ -872,6 +873,20 @@ getatomprop(Client *c, Atom prop)
+ 	return atom;
+ }
+ 
++Client *
++getclientundermouse(void)
++{
++	int ret, di;
++	unsigned int dui;
++	Window child, dummy;
++
++	ret = XQueryPointer(dpy, root, &dummy, &child, &di, &di, &di, &di, &dui);
++	if (!ret)
++		return NULL;
++
++	return wintoclient(child);
++}
++
+ int
+ getrootptr(int *x, int *y)
+ {
+@@ -1782,7 +1797,7 @@ unmanage(Client *c, int destroyed)
+ 		XUngrabServer(dpy);
+ 	}
+ 	free(c);
+-	focus(NULL);
++	focus(getclientundermouse());
+ 	updateclientlist();
+ 	arrange(m);
+ }
