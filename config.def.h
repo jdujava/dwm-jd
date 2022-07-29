@@ -34,16 +34,18 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class,            instance, title,                          tags mask, isterminal, noswallow, iscenter, isfakef, isfloat, monitor */
-	{ NULL,              NULL,     "Volume Control",               0,         0,          0,         1,        0,       1,       -1 },
-	{ "firefox",         NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       -1 },
-	{ "Chromium",        NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       -1 },
-	{ "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       -1 },
-	{ "TelegramDesktop", NULL,     "Media viewer",                 0,         0,          0,         1,        0,       1,       -1 },
-	{ "St",              NULL,     NULL,                           0,         1,          0,         0,        0,       0,       -1 },
-	{ NULL,              NULL,     "popup-center",                 0,         1,          0,         1,        0,       1,       -1 },
-	{ NULL,              NULL,     "Microsoft Teams Notification", 0,         0,          0,         0,        0,       1,       -1 },
-	{ NULL,              NULL,     "Event Tester",                 0,         0,          1,         0,        0,       0,       -1 }, /* xev */
+	/* class,            instance, title,                          tags mask, isterminal, noswallow, iscenter, isfakef, isfloat, preserve, monitor */
+	{ NULL,              NULL,     "Volume Control",               0,         0,          0,         1,        0,       1,       1,        -1 },
+	{ "firefox",         NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
+	{ "Chromium",        NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
+	{ "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       1,        -1 },
+	{ "TelegramDesktop", NULL,     NULL,                           0,         0,          0,         0,        0,       0,       0,        -1 },
+	{ "TelegramDesktop", NULL,     "Media viewer",                 0,         0,          0,         1,        0,       1,       0,        -1 },
+	{ "Dragon-drop",     NULL,     NULL,                           0,         0,          -1,        1,        0,       1,       0,        -1 },
+	{ "st-256color",     NULL,     NULL,                           0,         1,          0,         0,        0,       0,       1,        -1 },
+	{ NULL,              NULL,     "popup-center",                 0,         1,          0,         1,        0,       1,       1,        -1 },
+	{ NULL,              NULL,     "Microsoft Teams Notification", 0,         0,          0,         0,        0,       1,       1,        -1 },
+	{ NULL,              NULL,     "Event Tester",                 0,         0,          1,         0,        0,       0,       1,        -1 }, /* xev */
 };
 
 /* layout(s) */
