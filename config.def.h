@@ -3,6 +3,7 @@
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 15;       /* snap pixel */
+static const unsigned int step      = 25;       /* resize step */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
@@ -103,6 +104,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_4,      3)
 	TAGKEYS(                        XK_5,      4)
 	TAGKEYS(                        XK_6,      5)
+	{ MODKEY,                       XK_Down,   moveresize,     {.v = (int []){ 0,    1,  0,  0 }}},
+	{ MODKEY,                       XK_Up,     moveresize,     {.v = (int []){ 0,    -1, 0,  0 }}},
+	{ MODKEY,                       XK_Right,  moveresize,     {.v = (int []){ 1,    0,  0,  0 }}},
+	{ MODKEY,                       XK_Left,   moveresize,     {.v = (int []){ -1,   0,  0,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Down,   moveresize,     {.v = (int []){ 0,    0,  0,  1 }}},
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,     {.v = (int []){ 0,    0,  0,  -1 }}},
+	{ MODKEY|ShiftMask,             XK_Right,  moveresize,     {.v = (int []){ 0,    0,  1,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Left,   moveresize,     {.v = (int []){ 0,    0,  -1, 0 }}},
 };
 
 /* button definitions */

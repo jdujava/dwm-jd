@@ -236,6 +236,7 @@ static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizebarwin(Monitor *m);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
+static void moveresize(const Arg *arg);
 static void resizerequest(XEvent *e);
 static void restack(Monitor *m);
 static void run(void);
@@ -1882,6 +1883,37 @@ resizemouse(const Arg *arg)
 		selmon = m;
 		focus(NULL);
 	}
+}
+
+static void
+moveresize(const Arg *arg)
+{
+	XEvent ev;
+	Client *c;
+	int nx, ny, nw, nh;
+
+	if(!((c = selmon->sel) && arg && arg->v))
+		return;
+	if (!c->isfloating && selmon->lt[selmon->sellt]->arrange)
+		togglefloating(NULL);
+
+	nx = c->x + step*((int *)arg->v)[0];
+	ny = c->y + step*((int *)arg->v)[1];
+	nw = c->w + step*((int *)arg->v)[2];
+	nh = c->h + step*((int *)arg->v)[3];
+
+	if (abs(selmon->wx - nx) < snap)
+		nx = selmon->wx;
+	else if (abs((selmon->wx + selmon->ww) - (nx + WIDTH(c))) < snap)
+		nx = selmon->wx + selmon->ww - WIDTH(c);
+	if (abs(selmon->wy - ny) < snap)
+		ny = selmon->wy;
+	else if (abs((selmon->wy + selmon->wh) - (ny + HEIGHT(c))) < snap)
+		ny = selmon->wy + selmon->wh - HEIGHT(c);
+
+	resize(c, nx, ny, nw, nh, 1);
+
+	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
 }
 
 void
