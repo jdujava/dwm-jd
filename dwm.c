@@ -1772,7 +1772,7 @@ replaceclient(Client *old, Client *new)
 
 	new->mon = mon;
 	new->tags = old->tags;
-	new->isfloating = old->isfloating;
+	// new->isfloating = old->isfloating;
 
 	new->next = old->next;
 	new->snext = old->snext;
