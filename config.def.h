@@ -40,7 +40,7 @@ static const Rule rules[] = {
 	{ NULL,              NULL,     "Volume Control",               0,         0,          0,         1,        0,       1,       1,        -1 },
 	{ "firefox",         NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
 	{ "Chromium",        NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
-	{ "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       1,        -1 },
+	// { "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       1,        -1 },
 	{ "TelegramDesktop", NULL,     NULL,                           0,         0,          0,         0,        0,       0,       0,        -1 },
 	{ "TelegramDesktop", NULL,     "Media viewer",                 0,         0,          0,         1,        0,       1,       0,        -1 },
 	{ "Dragon-drop",     NULL,     NULL,                           0,         0,          -1,        1,        0,       1,       0,        -1 },
