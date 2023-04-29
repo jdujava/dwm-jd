@@ -1,3 +1,10 @@
+My fork of `dwm`.
+
+To set upstream remote to original dwm repo:
+```sh
+git remote add upstream git://git.suckless.org/dwm
+```
+
 dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
