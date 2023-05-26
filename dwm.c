@@ -1970,10 +1970,13 @@ restack(Monitor *m)
 				wc.sibling = c->win;
 			}
 	}
+	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags) && m->lt[m->sellt]->arrange != &monocle)
+		warp(m->sel);
+
+    // Among other things, this avoids changes of the stacking order from
+    // the EnterNotify events triggered by the mouse wrap.
 	XSync(dpy, False);
 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
-	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags) && selmon->lt[selmon->sellt] != &layouts[2])
-		warp(m->sel);
 }
 
 void
@@ -3136,7 +3139,6 @@ warp(const Client *c)
 		return;
 
 	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w / 2, c->h / 2);
-	XSync(dpy, True); // ignore changing stack order due to mouse movement
 }
 
 Client *
