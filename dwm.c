@@ -1191,7 +1191,7 @@ focusstack(const Arg *arg)
 {
 	Client *c = NULL, *i;
 
-	if (!selmon->sel || (selmon->sel->isfullscreen &&  !selmon->sel->isfakefullscreen))
+	if (!selmon->sel || (selmon->sel->isfullscreen && !selmon->sel->isfakefullscreen))
 		return;
 	if (arg->i > 0) {
 		for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next);
@@ -2460,8 +2460,15 @@ togglefloating(const Arg *arg)
 void
 togglefakefullscreen(const Arg *arg)
 {
-	if (selmon->sel || !selmon->sel->isfullscreen)
-		selmon->sel->isfakefullscreen = !selmon->sel->isfakefullscreen;
+	int isfullscreen;
+
+	if (!selmon->sel)
+		return;
+
+	isfullscreen = selmon->sel->isfullscreen;
+	setfullscreen(selmon->sel, False);
+	selmon->sel->isfakefullscreen = !selmon->sel->isfakefullscreen;
+	setfullscreen(selmon->sel, isfullscreen);
 }
 
 void
