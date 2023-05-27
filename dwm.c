@@ -853,10 +853,11 @@ deck(Monitor *m) {
 	if(n == 0)
 		return;
 
-	if(n > m->nmaster) {
-		mw = m->nmaster ? m->ww * m->mfact : 0;
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n - m->nmaster);
-	}
+	snprintf(m->ltsymbol, sizeof m->ltsymbol, "%s [%d]",
+			 m->lt[m->sellt]->symbol, MAX(n - m->nmaster, 0));
+
+	if (n > m->nmaster)
+		mw = m->nmaster ? m->ww * m->mfact : borderpx;
 	else
 		mw = m->ww;
 	for(i = my = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
@@ -1542,8 +1543,7 @@ monocle(Monitor *m)
 	for (c = m->clients; c; c = c->next)
 		if (ISVISIBLE(c))
 			n++;
-	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
+	snprintf(m->ltsymbol, sizeof m->ltsymbol, "%s [%d]", m->lt[m->sellt]->symbol, n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 		resize(c, m->wx - c->bw, m->wy - c->bw, m->ww, m->wh, False);
 }
