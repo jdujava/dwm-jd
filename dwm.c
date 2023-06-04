@@ -1560,7 +1560,7 @@ monocle(Monitor *m)
 			n++;
 	snprintf(m->ltsymbol, sizeof m->ltsymbol, "%s [%d]", m->lt[m->sellt]->symbol, n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
-		resize(c, m->wx - c->bw, m->wy - c->bw, m->ww, m->wh, False);
+		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }
 
 void
