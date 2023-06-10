@@ -2816,7 +2816,6 @@ updatestatus(void)
 	updatesystray();
 }
 
-
 void
 updatesystrayicongeom(Client *i, int w, int h)
 {
@@ -3294,3 +3293,5 @@ main(int argc, char *argv[])
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
 }
+
+// vim:noexpandtab:
