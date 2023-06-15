@@ -114,7 +114,7 @@ struct Client {
 	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
-	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isfakefullscreen, isterminal, noswallow, preserve;
+	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, isfakefullscreen, isterminal, noswallow, nopreserve;
 	int ignorecfgreqpos, ignorecfgreqsize;
 	pid_t pid;
 	Client *next;
@@ -169,7 +169,7 @@ typedef struct {
 	int iscentered;
 	int isfakefullscreen;
 	int isfloating;
-	int preserve;
+	int nopreserve;
 	int monitor;
 } Rule;
 
@@ -369,7 +369,7 @@ applyrules(Client *c)
 	/* rule matching */
 	c->iscentered = 0;
 	c->isfloating = 0;
-	c->preserve = 1;
+	c->nopreserve = 0;
 	c->tags = 0;
 	XGetClassHint(dpy, c->win, &ch);
 	class    = ch.res_class ? ch.res_class : broken;
@@ -386,7 +386,7 @@ applyrules(Client *c)
 			c->iscentered = r->iscentered;
 			c->isfakefullscreen = r->isfakefullscreen;
 			c->isfloating = r->isfloating;
-			c->preserve = r->preserve;
+			c->nopreserve = r->nopreserve;
 			c->tags |= r->tags;
 			for (m = mons; m && m->num != r->monitor; m = m->next);
 			if (m)
@@ -1456,7 +1456,7 @@ manage(Window w, XWindowAttributes *wa)
 	updatewindowtype(c);
 	updatesizehints(c);
 	updatewmhints(c);
-	if(c->preserve){ // restore previous assignment of the client
+	if(!c->nopreserve){ // restore previous assignment of the client
 		Monitor *m;
 		int di;
 		unsigned long dl;
@@ -2375,7 +2375,7 @@ unswallow(Client *c)
 void
 setclienttagprop(Client *c)
 {
-	if (!c->preserve)
+	if (c->nopreserve)
 		return;
 	long data[] = { (long) c->tags, (long) c->mon->num };
 	XChangeProperty(dpy, c->win, netatom[NetClientInfo], XA_CARDINAL, 32,
