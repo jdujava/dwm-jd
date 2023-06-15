@@ -45,6 +45,7 @@ static const Rule rules[] = {
 	/* class, instance, title, tags, isterminal, noswallow, iscentered, isfakefullscreen, isfloating, nopreserve, monitor } */
 	/* { .class = "Firefox", .tags = 1<<5, .noswallow = -1, .isfakefullscreen = 1 }, */
 	{ .class = "Chromium", .noswallow = -1, .isfakefullscreen = 1 },
+	{ .class = "TelegramDesktop", .nopreserve = 1 },
 	{ .class = "st-256color", .isterminal = 1 },
 	{ .instance = "popup-center", .iscentered = 1, .isfloating = 1 },
 	{ .class = "Dragon-drop",     .iscentered = 1, .isfloating = 1 },
