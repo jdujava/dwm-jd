@@ -13,7 +13,13 @@ static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
-static const char *fonts[]          = { "monospace:size=9:weight=heavy", "Font Awesome 6 Free Solid:size=9", "Font Awesome 6 Free Regular:size=9", "Material Icons:pixelsize=15:antialias=true", "Material Design Icons:pixelsize=15:antialias=true" };
+static const char *fonts[]          = {
+    "monospace:size=9:weight=heavy",
+    "Font Awesome 6 Free Solid:size=9",
+    "Font Awesome 6 Free Regular:size=9",
+    "Material Icons:pixelsize=15:antialias=true",
+    "Material Design Icons:pixelsize=15:antialias=true",
+};
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray2shade[]  = "#292929";
@@ -36,18 +42,15 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class,            instance, title,                          tags mask, isterminal, noswallow, iscenter, isfakef, isfloat, preserve, monitor */
-	{ NULL,              NULL,     "Volume Control",               0,         0,          0,         1,        0,       1,       1,        -1 },
-	{ "firefox",         NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
-	{ "Chromium",        NULL,     NULL,                           0,         0,          -1,        0,        1,       0,       1,        -1 },
-	// { "Inkscape",        NULL,     NULL,                           1 << 5,    0,          0,         0,        0,       0,       1,        -1 },
-	{ "TelegramDesktop", NULL,     NULL,                           0,         0,          0,         0,        0,       0,       0,        -1 },
-	{ "TelegramDesktop", NULL,     "Media viewer",                 0,         0,          0,         1,        0,       1,       0,        -1 },
-	{ "Dragon-drop",     NULL,     NULL,                           0,         0,          -1,        1,        0,       1,       0,        -1 },
-	{ "st-256color",     NULL,     NULL,                           0,         1,          0,         0,        0,       0,       1,        -1 },
-	{ NULL,              NULL,     "popup-center",                 0,         1,          0,         1,        0,       1,       1,        -1 },
-	{ NULL,              NULL,     "Microsoft Teams Notification", 0,         0,          0,         0,        0,       1,       1,        -1 },
-	{ NULL,              NULL,     "Event Tester",                 0,         0,          1,         0,        0,       0,       1,        -1 }, /* xev */
+	/* class, instance, title, tags, isterminal, noswallow, iscentered, isfakefullscreen, isfloating, nopreserve, monitor } */
+	/* { .class = "Firefox", .tags = 1<<5, .noswallow = -1, .isfakefullscreen = 1 }, */
+	{ .class = "Chromium", .noswallow = -1, .isfakefullscreen = 1 },
+	{ .class = "st-256color", .isterminal = 1 },
+	{ .instance = "popup-center", .iscentered = 1, .isfloating = 1 },
+	{ .class = "Dragon-drop",     .iscentered = 1, .isfloating = 1 },
+	{ .title = "Volume Control",  .iscentered = 1, .isfloating = 1 },
+	{ .title = "Microsoft Teams Notification", .isfloating = 1 },
+	{ .title = "Event Tester", .noswallow = 1 }, /* xev */
 };
 
 /* layout(s) */
@@ -75,9 +78,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "fmenu_run", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *dunstdatecurr[]  = { "dunstdate", "curr", NULL };
-static const char *dunstdatenext[]  = { "dunstdate", "next", NULL };
-static const char *dunstdateprev[]  = { "dunstdate", "prev", NULL };
+static const char *dunstdatecurr[] = { "dunstdate", "curr", NULL };
+static const char *dunstdatenext[] = { "dunstdate", "next", NULL };
+static const char *dunstdateprev[] = { "dunstdate", "prev", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function              argument */
@@ -110,20 +113,20 @@ static Key keys[] = {
 	{ MODKEY|ControlMask,           XK_period, focusmon,             {.i = +1 } },
 	{ MODKEY|ControlMask|ShiftMask, XK_comma,  tagmon,               {.i = -1 } },
 	{ MODKEY|ControlMask|ShiftMask, XK_period, tagmon,               {.i = +1 } },
-	TAGKEYS(                        XK_1,      0)
-	TAGKEYS(                        XK_2,      1)
-	TAGKEYS(                        XK_3,      2)
-	TAGKEYS(                        XK_4,      3)
-	TAGKEYS(                        XK_5,      4)
-	TAGKEYS(                        XK_6,      5)
-	{ MODKEY,                       XK_Down,   moveresize,           {.v = (int []){ 0,    1,  0,  0 }}},
-	{ MODKEY,                       XK_Up,     moveresize,           {.v = (int []){ 0,    -1, 0,  0 }}},
-	{ MODKEY,                       XK_Right,  moveresize,           {.v = (int []){ 1,    0,  0,  0 }}},
-	{ MODKEY,                       XK_Left,   moveresize,           {.v = (int []){ -1,   0,  0,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Down,   moveresize,           {.v = (int []){ 0,    0,  0,  1 }}},
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,           {.v = (int []){ 0,    0,  0,  -1 }}},
-	{ MODKEY|ShiftMask,             XK_Right,  moveresize,           {.v = (int []){ 0,    0,  1,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Left,   moveresize,           {.v = (int []){ 0,    0,  -1, 0 }}},
+	TAGKEYS(                        XK_1,                             0)
+	TAGKEYS(                        XK_2,                             1)
+	TAGKEYS(                        XK_3,                             2)
+	TAGKEYS(                        XK_4,                             3)
+	TAGKEYS(                        XK_5,                             4)
+	TAGKEYS(                        XK_6,                             5)
+	{ MODKEY,                       XK_Down,   moveresize,           {.v = (int []){ 0,  1,  0,  0 }}},
+	{ MODKEY,                       XK_Up,     moveresize,           {.v = (int []){ 0, -1,  0,  0 }}},
+	{ MODKEY,                       XK_Right,  moveresize,           {.v = (int []){ 1,  0,  0,  0 }}},
+	{ MODKEY,                       XK_Left,   moveresize,           {.v = (int []){-1,  0,  0,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Down,   moveresize,           {.v = (int []){ 0,  0,  0,  1 }}},
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,           {.v = (int []){ 0,  0,  0, -1 }}},
+	{ MODKEY|ShiftMask,             XK_Right,  moveresize,           {.v = (int []){ 0,  0,  1,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Left,   moveresize,           {.v = (int []){ 0,  0, -1,  0 }}},
 };
 
 /* button definitions */
@@ -149,3 +152,4 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+// vim:noexpandtab:
