@@ -79,6 +79,7 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "fmenu_run", NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *dunsttoggle[] = { "dunsttoggle", NULL };
 static const char *dunstdatecurr[] = { "dunstdate", "curr", NULL };
 static const char *dunstdatenext[] = { "dunstdate", "next", NULL };
 static const char *dunstdateprev[] = { "dunstdate", "prev", NULL };
@@ -141,6 +142,7 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button5,        setlayout,      {.v = &layouts[3]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button3,        spawn,          {.v = dunsttoggle } },
 	{ ClkStatusText,        0,              Button1,        spawn,          {.v = dunstdatecurr } },
 	{ ClkStatusText,        0,              Button4,        spawn,          {.v = dunstdatenext } },
 	{ ClkStatusText,        0,              Button5,        spawn,          {.v = dunstdateprev } },
