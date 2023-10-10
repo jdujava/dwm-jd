@@ -37,21 +37,23 @@ static const char *colors[][ColLast]      = {
 /* static const char *tags[] = { "1", "2", "3", "4", "5", "6" }; */
 static const char *tags[] = { "", "", "", "", "", "" };
 
+#define RULE(...) { .monitor = -1, ##__VA_ARGS__ }
+
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class, instance, title, tags, isterminal, noswallow, iscentered, isfakefullscreen, isfloating, nopreserve, monitor } */
-	/* { .class = "Firefox", .tags = 1<<5, .noswallow = -1, .isfakefullscreen = 1 }, */
-	{ .class = "Chromium", .noswallow = -1, .isfakefullscreen = 1 },
-	{ .class = "TelegramDesktop", .nopreserve = 1 },
-	{ .class = "st-256color", .isterminal = 1 },
-	{ .instance = "popup-center", .iscentered = 1, .isfloating = 1 },
-	{ .class = "Dragon-drop",     .iscentered = 1, .isfloating = 1 },
-	{ .title = "Volume Control",  .iscentered = 1, .isfloating = 1 },
-	{ .title = "Microsoft Teams Notification", .isfloating = 1 },
-	{ .title = "Event Tester", .noswallow = 1 }, /* xev */
+	/* { .class = "Firefox", .tags = 1<<5, .noswallow = -1, .isfakefullscreen = 1, .monitor = -1 }, */
+	RULE( .class = "Chromium", .noswallow = -1, .isfakefullscreen = 1 ),
+	RULE( .class = "TelegramDesktop", .nopreserve = 1 ),
+	RULE( .class = "st-256color", .isterminal = 1 ),
+	RULE( .instance = "popup-center", .iscentered = 1, .isfloating = 1 ),
+	RULE( .class = "Dragon-drop",     .iscentered = 1, .isfloating = 1 ),
+	RULE( .title = "Volume Control",  .iscentered = 1, .isfloating = 1 ),
+	RULE( .title = "Microsoft Teams Notification", .isfloating = 1 ),
+	RULE( .title = "Event Tester", .noswallow = 1 ), /* xev */
 };
 
 /* layout(s) */
