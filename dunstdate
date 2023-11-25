@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# based on https://github.com/chebro/calendar-notification/
+# added support for multiple months
+
+get_month() {
+	if [ $1 -ge 0 ]; then
+        text=$(cal -m "+$1 months")
+	else
+        text=$(cal -m "$((-$1)) months ago")
+	fi
+	today=$(date '+%e')
+    todaystyle="<b><span background='#fff' color='#285577'>$today</span></b>"
+	month=$(echo "$text" | head -n1)
+	heads=$(echo "$text" | head -n2 | tail -n1)
+	days=$(echo "$text" | tail -n6 | sed "s; $today; $todaystyle;"\
+                                   | sed "s;$today ;$todaystyle ;")
+
+    [ $1 -eq 0 ] && month="<u>$month</u>"
+    printf "%s\n%s\n%s\n" "<b>$month</b>" "<i>$heads</i>" "$days"
+}
+
+handle_action() {
+	echo $DIFF > "$TMP"
+
+    # for i in $(seq -2 2); do
+    #     months="$months\n$(get_month $((DIFF+i)))"
+    # done
+
+    months=$(printf "%s\n" \
+             "$(get_month $((DIFF-2)))"\
+             "$(get_month $((DIFF-1)))"\
+             "$(get_month $((DIFF+0)))"\
+             "$(get_month $((DIFF+1)))"\
+             "$(get_month $((DIFF+2)))")
+	footnote="<i>        ~ calendar</i> 󰸗 "
+
+	dunstify -a "dunstdate" "" "${months}\n${footnote}"
+}
+
+TMP=${XDG_RUNTIME_DIR:-/tmp}/calendar_notification_month
+touch "$TMP"
+
+read -r DIFF < "$TMP"
+# DIFF=$(<"$TMP")
+
+case $1 in
+	"curr") DIFF=0;;
+	"next") DIFF=$((DIFF+1));;
+	"prev") DIFF=$((DIFF-1));;
+esac
+
+handle_action
