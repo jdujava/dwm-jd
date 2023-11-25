@@ -24,7 +24,7 @@ clean:
 
 dist: clean
 	mkdir -p dwm-${VERSION}
-	cp -R LICENSE Makefile README config.def.h config.mk\
+	cp -R LICENSE Makefile README config.def.h config.mk dunstdate dunsttoggle\
 		dwm.1 drw.h util.h ${SRC} dwm.png transient.c dwm-${VERSION}
 	tar -cf dwm-${VERSION}.tar dwm-${VERSION}
 	gzip dwm-${VERSION}.tar
@@ -33,13 +33,19 @@ dist: clean
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
 	cp -f dwm ${DESTDIR}${PREFIX}/bin
+	cp -f dunstdate ${DESTDIR}${PREFIX}/bin
+	cp -f dunsttoggle ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
+	chmod 755 ${DESTDIR}${PREFIX}/bin/dunstdate
+	chmod 755 ${DESTDIR}${PREFIX}/bin/dunsttoggle
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 
 uninstall:
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-		${DESTDIR}${MANPREFIX}/man1/dwm.1
+	rm -f ${DESTDIR}${PREFIX}/bin/dwm
+	rm -f ${DESTDIR}${PREFIX}/bin/dunstdate
+	rm -f ${DESTDIR}${PREFIX}/bin/dunsttoggle
+	rm -f ${DESTDIR}${MANPREFIX}/man1/dwm.1
 
 .PHONY: all clean dist install uninstall

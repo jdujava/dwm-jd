@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Toggle dunst pause state and refresh the dwm bar
+dunstctl set-paused toggle && refbar
+
+# --- refbar script:
+# !/bin/sh
+# pkill -SIGUSR1 "${STATUSBAR:?}"
