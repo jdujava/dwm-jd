@@ -1046,9 +1046,9 @@ drawbar(Monitor *m)
 			}
 		}
 		// if (occ & 1 << i)
-		// 	drw_rect(drw, x + boxs, boxs, boxw, boxw,
-		// 		m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-		// 		urg & 1 << i);
+		//	drw_rect(drw, x + boxs, boxs, boxw, boxw,
+		//		m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
+		//		urg & 1 << i);
 		x += w;
 	}
 	w = TEXTW(m->ltsymbol);
@@ -1134,7 +1134,7 @@ focus(Client *c)
 	if (selmon->sel && selmon->sel != c) {
 		losefullscreen(c);
 		unfocus(selmon->sel, 0);
-    }
+	}
 	if (c) {
 		if (c->mon != selmon)
 			selmon = c->mon;
@@ -2318,9 +2318,9 @@ int
 solitary(Client *c)
 {
 	return ((nexttiled(c->mon->clients) == c && !nexttiled(c->next))
-	    || &monocle == c->mon->lt[c->mon->sellt]->arrange)
-	    && (!c->isfullscreen || c->isfakefullscreen) && !c->isfloating
-	    && NULL != c->mon->lt[c->mon->sellt]->arrange;
+		|| &monocle == c->mon->lt[c->mon->sellt]->arrange)
+		&& (!c->isfullscreen || c->isfakefullscreen) && !c->isfloating
+		&& NULL != c->mon->lt[c->mon->sellt]->arrange;
 }
 
 void
@@ -3152,12 +3152,12 @@ warp(const Client *c)
 	}
 
 	if (!getrootptr(&x, &y) ||
-	    (x > c->x - c->bw &&
-	     y > c->y - c->bw &&
-	     x < c->x + c->w + c->bw*2 &&
-	     y < c->y + c->h + c->bw*2) ||
-	    (y > c->mon->by && y < c->mon->by + bh) ||
-	    (c->mon->topbar && !y))
+		(x > c->x - c->bw &&
+		 y > c->y - c->bw &&
+		 x < c->x + c->w + c->bw*2 &&
+		 y < c->y + c->h + c->bw*2) ||
+		(y > c->mon->by && y < c->mon->by + bh) ||
+		(c->mon->topbar && !y))
 		return;
 
 	XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w / 2, c->h / 2);
