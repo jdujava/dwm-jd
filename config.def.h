@@ -50,6 +50,7 @@ static const Rule rules[] = {
 	RULE( .class = "Chromium", .noswallow = -1, .isfakefullscreen = 1 ),
 	RULE( .class = "TelegramDesktop", .nopreserve = 1 ),
 	RULE( .class = "st-256color", .isterminal = 1 ),
+	RULE( .instance = "noswallow", .isterminal = 0 ),
 	RULE( .instance = "popup-center", .iscentered = 1, .isfloating = 1 ),
 	RULE( .class = "Dragon-drop",     .iscentered = 1, .isfloating = 1 ),
 	RULE( .title = "Volume Control",  .iscentered = 1, .isfloating = 1 ),
