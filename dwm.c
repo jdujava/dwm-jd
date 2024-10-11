@@ -904,9 +904,9 @@ dirtomon(int dir)
 
 	if (dir > 0) {
 		if (!(m = selmon->next))
-			m = mons;
+			m = selmon;
 	} else if (selmon == mons)
-		for (m = mons; m->next; m = m->next);
+		m = selmon;
 	else
 		for (m = mons; m->next != selmon; m = m->next);
 	return m;
