@@ -83,6 +83,9 @@ static const Layout layouts[] = {
 static const char *dmenucmd[] = { "fmenu_run", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+/* for XF86XK_* keys */
+#include <X11/XF86keysym.h>
+
 static Key keys[] = {
 	/* modifier                     key        function              argument */
 	{ MODKEY,                       XK_d,      spawn,                {.v = dmenucmd } },
@@ -128,14 +131,21 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                             6)
 	// TAGKEYS(                        XK_8,                             7)
 	// TAGKEYS(                        XK_9,                             8)
-	{ MODKEY,                       XK_Down,   moveresize,           {.v = (int []){ 0,  1,  0,  0 }}},
-	{ MODKEY,                       XK_Up,     moveresize,           {.v = (int []){ 0, -1,  0,  0 }}},
-	{ MODKEY,                       XK_Right,  moveresize,           {.v = (int []){ 1,  0,  0,  0 }}},
-	{ MODKEY,                       XK_Left,   moveresize,           {.v = (int []){-1,  0,  0,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Down,   moveresize,           {.v = (int []){ 0,  0,  0,  1 }}},
-	{ MODKEY|ShiftMask,             XK_Up,     moveresize,           {.v = (int []){ 0,  0,  0, -1 }}},
-	{ MODKEY|ShiftMask,             XK_Right,  moveresize,           {.v = (int []){ 0,  0,  1,  0 }}},
-	{ MODKEY|ShiftMask,             XK_Left,   moveresize,           {.v = (int []){ 0,  0, -1,  0 }}},
+	{ MODKEY,                       XK_Down,   moveresize,           {.v = (const int []){ 0,  1,  0,  0 }}},
+	{ MODKEY,                       XK_Up,     moveresize,           {.v = (const int []){ 0, -1,  0,  0 }}},
+	{ MODKEY,                       XK_Right,  moveresize,           {.v = (const int []){ 1,  0,  0,  0 }}},
+	{ MODKEY,                       XK_Left,   moveresize,           {.v = (const int []){-1,  0,  0,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Down,   moveresize,           {.v = (const int []){ 0,  0,  0,  1 }}},
+	{ MODKEY|ShiftMask,             XK_Up,     moveresize,           {.v = (const int []){ 0,  0,  0, -1 }}},
+	{ MODKEY|ShiftMask,             XK_Right,  moveresize,           {.v = (const int []){ 0,  0,  1,  0 }}},
+	{ MODKEY|ShiftMask,             XK_Left,   moveresize,           {.v = (const int []){ 0,  0, -1,  0 }}},
+	{ 0,                  XF86XK_AudioPause,   spawn,                {.v = (const char*[]){ "playerctl", "play-pause", NULL } } },
+	{ 0,                  XF86XK_AudioPlay,    spawn,                {.v = (const char*[]){ "playerctl", "play-pause", NULL } } },
+	{ 0,                  XF86XK_AudioStop,    spawn,                {.v = (const char*[]){ "playerctl", "stop", NULL } } },
+	{ 0,                  XF86XK_AudioNext,    spawn,                {.v = (const char*[]){ "playerctl", "next", NULL } } },
+	{ 0,                  XF86XK_AudioPrev,    spawn,                {.v = (const char*[]){ "playerctl", "previous", NULL } } },
+	{ 0,                  XF86XK_AudioForward, spawn,                {.v = (const char*[]){ "playerctl", "position", "10+", NULL } } },
+	{ 0,                  XF86XK_AudioRewind,  spawn,                {.v = (const char*[]){ "playerctl", "position", "10-", NULL } } },
 };
 
 /* button definitions */
