@@ -80,17 +80,13 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "fmenu_run", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *dunsttoggle[] = { "dunsttoggle", NULL };
-static const char *dunstdatecurr[] = { "dunstdate", "curr", NULL };
-static const char *dunstdatenext[] = { "dunstdate", "next", NULL };
-static const char *dunstdateprev[] = { "dunstdate", "prev", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function              argument */
 	{ MODKEY,                       XK_d,      spawn,                {.v = dmenucmd } },
+	{ MODKEY,                       XK_Return, spawn,                {.v = termcmd } },
 	{ MODKEY,                       XK_q,      killclient,           {0} },
 	{ MODKEY,                       XK_j,      focusstack,           {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,           {.i = -1 } },
@@ -153,10 +149,10 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button5,        setlayout,      {.v = &layouts[3]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkStatusText,        0,              Button3,        spawn,          {.v = dunsttoggle } },
-	{ ClkStatusText,        0,              Button1,        spawn,          {.v = dunstdatecurr } },
-	{ ClkStatusText,        0,              Button4,        spawn,          {.v = dunstdatenext } },
-	{ ClkStatusText,        0,              Button5,        spawn,          {.v = dunstdateprev } },
+	{ ClkStatusText,        0,              Button3,        spawn,          {.v = (const char*[]){ "dunsttoggle", NULL } } },
+	{ ClkStatusText,        0,              Button1,        spawn,          {.v = (const char*[]){ "dunstdate", "curr", NULL } } },
+	{ ClkStatusText,        0,              Button4,        spawn,          {.v = (const char*[]){ "dunstdate", "next", NULL } } },
+	{ ClkStatusText,        0,              Button5,        spawn,          {.v = (const char*[]){ "dunstdate", "prev", NULL } } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
