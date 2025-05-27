@@ -80,7 +80,7 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* commands */
-static const char *dmenucmd[] = { "fmenu_run", NULL };
+static const char *menucmd[] = { "/bin/sh", "-c", "if command -v fmenu_run; then fmenu_run; else dmenu_run; fi", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 /* for XF86XK_* keys */
@@ -88,7 +88,7 @@ static const char *termcmd[]  = { "st", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function              argument */
-	{ MODKEY,                       XK_d,      spawn,                {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,      spawn,                {.v = menucmd } },
 	{ MODKEY,                       XK_Return, spawn,                {.v = termcmd } },
 	{ MODKEY,                       XK_q,      killclient,           {0} },
 	{ MODKEY,                       XK_j,      focusstack,           {.i = +1 } },
