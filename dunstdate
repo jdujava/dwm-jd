@@ -4,19 +4,23 @@
 # added support for multiple months
 
 get_month() {
-	if [ $1 -ge 0 ]; then
-        text=$(cal -m "+$1 months")
-	else
-        text=$(cal -m "$((-$1)) months ago")
-	fi
-	today=$(date '+%e')
-    todaystyle="<b><span background='#fff' color='#285577'>$today</span></b>"
+    ## get the month and year shifted by $1 months from today
+    ## NOTE: to handle dates such as May 31s, we shift from the 15th
+    ## of the current month, see https://stackoverflow.com/a/13168625
+    month_year_shifted=$(date --date="$(date +%Y-%m-15) $1 month" +'%m %Y')
+    text=$(cal -m $month_year_shifted)
+
 	month=$(echo "$text" | head -n1)
 	heads=$(echo "$text" | head -n2 | tail -n1)
-	days=$(echo "$text" | tail -n6 | sed "s; $today; $todaystyle;"\
-                                   | sed "s;$today ;$todaystyle ;")
+    days=$(echo "$text" | tail -n6)
 
-    [ $1 -eq 0 ] && month="<u>$month</u>"
+    if [ $1 -eq 0 ]; then  # highlight current day and month
+        month="<u>$month</u>"
+        today=$(date '+%e')
+        todaystyle="<b><span background='#fff' color='#285577'>$today</span></b>"
+        days=$(echo "$days" | sed "s; $today; $todaystyle;" \
+                            | sed "s;$today ;$todaystyle ;")
+    fi
     printf "%s\n%s\n%s\n" "<b>$month</b>" "<i>$heads</i>" "$days"
 }
 
