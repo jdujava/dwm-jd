@@ -15,8 +15,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 4;        /* 2 is the default spacing around the bar's font */
 static const char *fonts[]          = {
     "monospace:size=9:weight=heavy",
-    "Font Awesome 6 Free Solid:size=9",
-    "Font Awesome 6 Free Regular:size=9",
+    "Font Awesome 7 Free Solid:size=9",
+    "Font Awesome 7 Free Regular:size=9",
     "Material Icons:pixelsize=15:antialias=true",
     "Material Design Icons:pixelsize=15:antialias=true",
 };
